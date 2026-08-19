@@ -43,6 +43,9 @@
       .course-update-panel { background: #2a2010; border-color: #6b4a1a; }
       .course-update-panel summary, .cu-date { color: #f0b96a; }
       .card-block-label { color: var(--muted); }
+      .research-countdown { background: #3a1512; border-color: #7a3129; color: #f3a99c; }
+      .research-date-item.is-next .research-date-when,
+      .research-date-item.is-next .research-date-nlt { color: #f3a99c; }
     }
   }
   :root[data-theme="dark"] {
@@ -61,6 +64,9 @@
     .course-update-panel { background: #2a2010; border-color: #6b4a1a; }
     .course-update-panel summary, .cu-date { color: #f0b96a; }
     .card-block-label { color: var(--muted); }
+    .research-countdown { background: #3a1512; border-color: #7a3129; color: #f3a99c; }
+    .research-date-item.is-next .research-date-when,
+    .research-date-item.is-next .research-date-nlt { color: #f3a99c; }
   }
 
   * { box-sizing: border-box; }
@@ -213,6 +219,64 @@
   }
   .sidebar-blocknav a:last-child { border-bottom: none; }
   .sidebar-blocknav a:hover { color: var(--supp); }
+
+  /* --- research paper dates + countdown --- */
+  .research-panel { margin: 0; }
+  .research-panel-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .research-countdown {
+    background: #fdecea;
+    border: 1px solid #f3b4ac;
+    color: #a23225;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    line-height: 1.4;
+    font-size: 0.72rem;
+  }
+  .research-countdown .rc-label {
+    display: block;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    opacity: 0.85;
+    margin-bottom: 2px;
+  }
+  .research-countdown .rc-time { font-weight: 700; }
+  .research-countdown .rc-desc { font-weight: 500; }
+  .research-date-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .research-date-item[hidden] { display: none; }
+  .research-date-item { font-size: 0.78rem; line-height: 1.4; }
+  .research-date-when {
+    font-weight: 700;
+    color: var(--navy-text);
+    font-family: var(--serif);
+  }
+  .research-date-nlt {
+    font-weight: 600;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+  }
+  .research-date-desc { color: var(--text); }
+  .research-date-item.is-next .research-date-when,
+  .research-date-item.is-next .research-date-nlt { color: #a23225; }
+  .research-date-empty { font-size: 0.78rem; color: var(--muted); font-style: italic; margin: 0; }
 
   .page-layout {
     max-width: 1400px;
@@ -823,6 +887,22 @@
       <a href="#card-week-05">Block III &middot; Nuclear &amp; Extended Domains</a>
       <a href="#card-week-08">Block IV &middot; Air Power &amp; Emerging Tech</a>
       <a href="#card-week-10">Block V &middot; Capstone &amp; Administration</a>
+    </div>
+
+    <div class="research-panel" id="researchPanel">
+      <div class="research-panel-title">Research Paper Dates</div>
+      <div class="research-countdown" id="researchCountdown" hidden></div>
+      <ul class="research-date-list" id="researchDateList">
+        <li class="research-date-item" data-due="2026-09-09T23:59:00" data-kind="due">
+          <div class="research-date-when">Wed, Sep 9 <span class="research-date-nlt">NLT 2359 EDT</span></div>
+          <div class="research-date-desc">2-page Paper Proposal due</div>
+        </li>
+        <li class="research-date-item" data-due="2026-10-23T23:59:00" data-kind="due">
+          <div class="research-date-when">Fri, Oct 23 <span class="research-date-nlt">NLT 2359 EDT</span></div>
+          <div class="research-date-desc">Final Research Paper due (2,500 words min.)</div>
+        </li>
+      </ul>
+      <p class="research-date-empty" id="researchDateEmpty" hidden>All research paper dates have passed.</p>
     </div>
   </aside>
 
@@ -1635,6 +1715,52 @@
     document.querySelectorAll('.session-card').forEach(function(c) { c.open = false; });
   }
 
+  // ---------------- research paper dates / countdown ----------------
+  function updateResearchDates() {
+    var list = document.getElementById('researchDateList');
+    var countdownEl = document.getElementById('researchCountdown');
+    var emptyEl = document.getElementById('researchDateEmpty');
+    if (!list || !countdownEl || !emptyEl) return;
+
+    var now = new Date();
+    var items = list.querySelectorAll('.research-date-item');
+    var nextDueEl = null;
+    var nextDueTime = null;
+    var anyVisible = false;
+
+    items.forEach(function(li) {
+      li.classList.remove('is-next');
+      var due = new Date(li.dataset.due);
+      if (due < now) {
+        li.hidden = true;
+        return;
+      }
+      li.hidden = false;
+      anyVisible = true;
+      if (li.dataset.kind === 'due' && (!nextDueTime || due < nextDueTime)) {
+        nextDueTime = due;
+        nextDueEl = li;
+      }
+    });
+
+    emptyEl.hidden = anyVisible;
+
+    if (nextDueEl && nextDueTime) {
+      nextDueEl.classList.add('is-next');
+      var diffMs = nextDueTime - now;
+      var totalHours = Math.floor(diffMs / 3600000);
+      var days = Math.floor(totalHours / 24);
+      var hours = totalHours % 24;
+      var desc = nextDueEl.querySelector('.research-date-desc').textContent;
+      countdownEl.hidden = false;
+      countdownEl.innerHTML = '<span class="rc-label">Next research paper deadline</span>' +
+        '<span class="rc-time">' + days + 'd ' + hours + 'h</span> ' +
+        '<span class="rc-desc">&mdash; ' + desc + '</span>';
+    } else {
+      countdownEl.hidden = true;
+    }
+  }
+
   // ---------------- navigation helpers ----------------
   function jumpToDate(date) {
     var row = document.getElementById('day-' + date);
@@ -1730,6 +1856,8 @@
   // ---------------- init ----------------
   buildSearchIndex();
   initReadingCheckboxes();
+  updateResearchDates();
+  setInterval(updateResearchDates, 60000);
 })();
 </script>
 
