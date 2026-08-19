@@ -188,37 +188,7 @@
   :root[data-theme="dark"] .icon-sun { display: none; }
   :root[data-theme="dark"] .icon-moon { display: block; }
 
-  /* --- sidebar stats + block quick-nav --- */
-  .sidebar-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0 0 18px;
-  }
-  .sidebar-stat {
-    flex: 1 1 calc(33.33% - 6px);
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 8px 6px;
-    text-align: center;
-    min-width: 76px;
-  }
-  .sidebar-stat .num {
-    display: block;
-    font-family: var(--serif);
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--navy-text);
-  }
-  .sidebar-stat .label {
-    display: block;
-    font-size: 0.58rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    margin-top: 2px;
-  }
+  /* --- sidebar block quick-nav --- */
   .sidebar-blocknav {
     margin: 0 0 18px;
     padding-bottom: 16px;
@@ -334,20 +304,6 @@
     color: #fff;
     border-color: var(--navy);
   }
-
-  .alert {
-    background: #fdf1e7;
-    border: 1px solid #f0c48a;
-    color: #8a4b00;
-    padding: 14px 18px;
-    border-radius: 10px;
-    margin: 0 0 20px;
-    font-size: 0.87rem;
-    line-height: 1.55;
-  }
-  .alert strong { color: #6b3900; }
-  .alert p { margin: 0 0 6px; }
-  .alert p:last-child { margin-bottom: 0; }
 
   /* --- collapsible dated course-update notices --- */
   .course-update-panel {
@@ -860,15 +816,6 @@
       <button type="button" class="toolbar-btn" data-action="collapse-all">Collapse all</button>
     </div>
 
-    <div class="sidebar-stats">
-      <div class="sidebar-stat"><span class="num">10</span><span class="label">Weeks</span></div>
-      <div class="sidebar-stat"><span class="num" style="font-size:0.82rem;">24 Aug&ndash;26 Oct</span><span class="label">Term Dates</span></div>
-      <div class="sidebar-stat"><span class="num">3</span><span class="label">Learning Objs</span></div>
-      <div class="sidebar-stat"><span class="num">28</span><span class="label">Required Readings</span></div>
-      <div class="sidebar-stat"><span class="num">814</span><span class="label">Total Pages</span></div>
-      <div class="sidebar-stat"><span class="num">3</span><span class="label">Supplemental</span></div>
-    </div>
-
     <div class="sidebar-blocknav">
       <div class="sidebar-blocknav-title">Course Blocks</div>
       <a href="#card-week-01">Block I &middot; Foundations &amp; Perception</a>
@@ -892,11 +839,14 @@
       </div>
     </details>
 
-    <div class="alert">
-      <p><strong>Schedule note (as of 12 Aug 2026):</strong> Seminar normally meets Monday afternoons (in person, up to 2 hrs); it shifts to Wednesday afternoon in any week where Monday falls on a federal holiday. That shift affects Week 3 (Mon 7 Sept is Labor Day &rarr; meets Wed 9 Sept) and Week 8 (Mon 12 Oct is Columbus Day/Indigenous Peoples&rsquo; Day &rarr; meets Wed 14 Oct).</p>
-      <p>The dates below follow the current Blackboard course calendar. The original PDF syllabus (dated 20 April 2026) listed Week 2 on Wed 2 Sept and Week 3 on Mon 7 Sept &mdash; Blackboard now shows Week 2 on Mon 31 Aug and Week 3 on Wed 9 Sept instead, consistent with the Labor Day shift rule above. Confirm against Blackboard before finalizing personal calendar entries.</p>
-      <p><strong>Key deadlines:</strong> 2-page paper proposal due Wed 9 Sept 2026, 11:59 PM EDT (Week 3) &bull; Final research paper (2,500 words min.) due Fri 23 Oct 2026, 11:59 PM EDT (Week 9).</p>
-    </div>
+    <details class="course-update-panel" id="scheduleNotePanel">
+      <summary><span class="cu-ribbon">Note</span>Schedule Note<span class="cu-date">12 Aug 2026</span></summary>
+      <div class="cu-body">
+        <p>Seminar normally meets Monday afternoons (in person, up to 2 hrs); it shifts to Wednesday afternoon in any week where Monday falls on a federal holiday. That shift affects Week 3 (Mon 7 Sept is Labor Day &rarr; meets Wed 9 Sept) and Week 8 (Mon 12 Oct is Columbus Day/Indigenous Peoples&rsquo; Day &rarr; meets Wed 14 Oct).</p>
+        <p>The dates below follow the current Blackboard course calendar. The original PDF syllabus (dated 20 April 2026) listed Week 2 on Wed 2 Sept and Week 3 on Mon 7 Sept &mdash; Blackboard now shows Week 2 on Mon 31 Aug and Week 3 on Wed 9 Sept instead, consistent with the Labor Day shift rule above. Confirm against Blackboard before finalizing personal calendar entries.</p>
+        <p><strong>Key deadlines:</strong> 2-page paper proposal due Wed 9 Sept 2026, 11:59 PM EDT (Week 3) &bull; Final research paper (2,500 words min.) due Fri 23 Oct 2026, 11:59 PM EDT (Week 9).</p>
+      </div>
+    </details>
 
     <div class="cal-agenda" id="calAgenda">
 
@@ -913,7 +863,6 @@
                 <span class="card-meta-line">Monday, 24 August 2026 &middot; Seminar</span>
               </span>
               <span class="badges">
-                <span class="badge badge-type">106 Pages</span>
                 <span class="badge">2 Readings + 1 Video</span>
               </span>
             </summary>
@@ -971,7 +920,6 @@
                 <span class="card-meta-line">Monday, 31 August 2026 &middot; Seminar <span class="flag">(PDF syllabus listed Wed 2 Sept &mdash; Blackboard now shows Mon 31 Aug)</span></span>
               </span>
               <span class="badges">
-                <span class="badge badge-type">84 Pages</span>
                 <span class="badge">4 Readings</span>
               </span>
             </summary>
@@ -1039,7 +987,6 @@
                 <span class="card-meta-line">Wednesday, 9 September 2026 &middot; Seminar <span class="flag">(shifted from Mon 7 Sept &mdash; Labor Day)</span></span>
               </span>
               <span class="badges">
-                <span class="badge badge-type">51 Pages</span>
                 <span class="badge">4 Readings</span>
                 <span class="badge badge-due">Paper Proposal Due 9 Sept</span>
               </span>
@@ -1099,7 +1046,6 @@
                 <span class="card-meta-line">Monday, 14 September 2026 &middot; Seminar</span>
               </span>
               <span class="badges">
-                <span class="badge badge-type">60 Pages</span>
                 <span class="badge">4 Readings</span>
               </span>
             </summary>
@@ -1158,7 +1104,6 @@
                 <span class="card-meta-line">Monday, 21 September 2026 &middot; Seminar</span>
               </span>
               <span class="badges">
-                <span class="badge badge-type">106 Pages</span>
                 <span class="badge">5 Readings</span>
               </span>
             </summary>
@@ -1218,7 +1163,6 @@
                 <span class="card-meta-line">Monday, 28 September 2026 &middot; Seminar</span>
               </span>
               <span class="badges">
-                <span class="badge badge-type">89 Pages</span>
                 <span class="badge">4 Readings</span>
               </span>
             </summary>
@@ -1279,7 +1223,6 @@
                 <span class="card-meta-line">Monday, 5 October 2026 &middot; Seminar</span>
               </span>
               <span class="badges">
-                <span class="badge badge-type">110 Pages</span>
                 <span class="badge">3 Readings + 1 Handout</span>
               </span>
             </summary>
@@ -1345,7 +1288,6 @@
                 <span class="card-meta-line">Wednesday, 14 October 2026 &middot; Seminar <span class="flag">(shifted from Mon 12 Oct &mdash; Columbus Day/Indigenous Peoples&rsquo; Day)</span></span>
               </span>
               <span class="badges">
-                <span class="badge badge-type">106 Pages</span>
                 <span class="badge">3 Readings + 2 Videos</span>
               </span>
             </summary>
@@ -1405,7 +1347,6 @@
                 <span class="card-meta-line">Monday, 19 October 2026 &middot; Seminar</span>
               </span>
               <span class="badges">
-                <span class="badge badge-type">102 Pages</span>
                 <span class="badge">4 Readings</span>
                 <span class="badge badge-due">Final Paper Due 23 Oct</span>
               </span>
